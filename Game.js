@@ -33,6 +33,7 @@ function Game() {
     this.snake;
     this.snakelength = 3;
     this.direction = 1;
+    this.lastdirection;
 
     this.candy = Array();
 
@@ -103,22 +104,27 @@ function Game() {
         switch (e.keyCode) {
             //W
             case 87:
-                this.direction = 3;
+                this.changedirection(3);
                 break;
             //S
             case 83:
-                this.direction = 2;
+                this.changedirection(2);
                 break;
             //A
             case 65:
-                this.direction = 1;
+                this.changedirection(1);
                 break;
             //D
             case 68:
-                this.direction = 0;
+                this.changedirection(0);
                 break;
         }
     };
+
+    this.changedirection = function (d) {
+        this.lastdirection = this.direction;
+        this.direction = d % 4;
+    }
 
     var lastDownTarget;
     this.addListeners = function () {
@@ -158,8 +164,14 @@ function Game() {
                 break;
         }
 
-        //check if newHead isn't myself
+        //special case so you cant go backwards
 
+        if (this.snake.length > 1 && this.snake[1][0] == newHead[0] && this.snake[1][1] == newHead[1]) {
+            this.direction = this.lastdirection;
+            return;
+        }
+
+        //check if newHead isn't myself
         switch (this.grid[newHead[0]][newHead[1]]) {
             case 1:
                 this.gameover();
