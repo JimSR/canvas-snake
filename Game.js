@@ -43,6 +43,7 @@ function Game() {
     this.speedincreasefactor = 0.1;
 
     this.score = 0;
+    this.highscore = 0;
 
 
 
@@ -238,9 +239,15 @@ function Game() {
 
     this.updateScore = function () {
 
-        var element = document.getElementById("score");
+        if (this.highscore < this.score) this.highscore = this.score;
 
-        element.innerHTML = "" + this.score;
+        var scoreelement = document.getElementById("score");
+
+        scoreelement.innerHTML = "" + this.score;
+
+        var highscoreElement = document.getElementById("highscore");
+
+        highscoreElement.innerHTML = "" + this.highscore;
     }
 
     this.gameLoop = function () {
